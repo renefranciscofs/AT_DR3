@@ -61,6 +61,18 @@ public class MainTest {
     @Test
     @Order(3)
     public void testBuscarUsuarioPorEmail() {
+        String json = """
+            {
+              "nome": "Rene",
+              "email": "rene@example.com",
+              "idade": 24
+            }
+            """;
+        Unirest.post(url("/usuarios"))
+            .header("Content-Type", "application/json")
+            .body(json)
+            .asJson();
+
         HttpResponse<JsonNode> response = Unirest.get(url("/usuarios/rene@example.com")).asJson();
         assertEquals(200, response.getStatus());
         assertEquals("Rene", response.getBody().getObject().getString("nome"));
@@ -69,6 +81,18 @@ public class MainTest {
     @Test
     @Order(4)
     public void testListarUsuarios() {
+        String json = """
+            {
+              "nome": "Listagem",
+              "email": "listar@example.com",
+              "idade": 30
+            }
+            """;
+        Unirest.post(url("/usuarios"))
+            .header("Content-Type", "application/json")
+            .body(json)
+            .asJson();
+
         HttpResponse<JsonNode> response = Unirest.get(url("/usuarios")).asJson();
         assertEquals(200, response.getStatus());
         assertTrue(response.getBody().getArray().length() > 0);
